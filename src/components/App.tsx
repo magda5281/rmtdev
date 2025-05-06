@@ -6,6 +6,12 @@ import Header, { HeaderTop } from './Header';
 import Logo from './Logo';
 import BookmarksButton from './BookmarksButton';
 import SearchForm from './SearchForm';
+import JobItemContent from './JobItemContent';
+import Sidebar, { SidebarTop } from './Sidebar';
+import JobList from './JobList';
+import PaginationControls from './PaginationControls';
+import ResultsCount from './ResultsCount';
+import SortingControls from './SortingControls';
 
 function App() {
   const [searchText, setSearchText] = useState('');
@@ -30,7 +36,17 @@ function App() {
         </HeaderTop>
         <SearchForm searchText={searchText} setSearchText={setSearchText} />
       </Header>
-      <Container jobItems={jobItems} />
+      <Container>
+        <Sidebar>
+          <SidebarTop>
+            <ResultsCount />
+            <SortingControls />
+          </SidebarTop>
+          <JobList jobItems={jobItems} />
+          <PaginationControls />
+        </Sidebar>
+        <JobItemContent />
+      </Container>
       <Footer />
     </>
   );
