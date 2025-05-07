@@ -6,6 +6,7 @@ export function useJobItems(searchText: string) {
   const [isLoading, setIsLoading] = useState(false);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+  const jobItemsSliced = jobItems.slice(0, 7);
   useEffect(() => {
     if (!searchText.trim()) {
       return;
@@ -26,8 +27,5 @@ export function useJobItems(searchText: string) {
     fetchData();
   }, [searchText, API_BASE_URL]);
 
-  return {
-    jobItems,
-    isLoading,
-  };
+  return [jobItemsSliced, isLoading] as const;
 }
