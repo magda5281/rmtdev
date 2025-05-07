@@ -3,7 +3,6 @@ export type JobItem = {
   title: string;
   badgeLetters: string;
   company: string;
-  date: string;
   relevanceScore: number;
   daysAgo: number;
 };

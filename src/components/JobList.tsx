@@ -1,15 +1,19 @@
 import { JobItem } from '../types';
 import JobListItem from './JobListItem';
+import Spinner from './Spinner';
 
 type JobListProps = {
   jobItems: JobItem[];
+  isLoading: boolean;
 };
-export function JobList({ jobItems }: JobListProps) {
+export function JobList({ jobItems, isLoading }: JobListProps) {
   return (
     <ul className='job-list'>
-      {jobItems.map((jobItem) => (
-        <JobListItem jobItem={jobItem} />
-      ))}
+      {isLoading && <Spinner />}
+      {!isLoading &&
+        jobItems.map((jobItem) => {
+          return <JobListItem key={jobItem.id} jobItem={jobItem} />;
+        })}
     </ul>
   );
 }
