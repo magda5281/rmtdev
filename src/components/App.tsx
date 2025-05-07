@@ -12,15 +12,14 @@ import JobList from './JobList';
 import PaginationControls from './PaginationControls';
 import ResultsCount from './ResultsCount';
 import SortingControls from './SortingControls';
-import { JobItem } from '../types';
+import { JobItem } from '../lib/types';
 
 function App() {
   const [searchText, setSearchText] = useState('');
   const [jobItems, setJobItems] = useState<JobItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  console.log('searchText', searchText);
-  console.log('isLoading', isLoading);
+
   useEffect(() => {
     if (!searchText.trim()) {
       return;
