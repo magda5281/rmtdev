@@ -27,13 +27,12 @@ function App() {
 
   //derived/computed state
 
-  const jobItemsSorted =
-    jobItems?.sort((a, b) => {
-      if (sortBy === 'relevant') {
-        return b.relevanceScore - a.relevanceScore;
-      }
-      return a.daysAgo - b.daysAgo;
-    }) || [];
+  const jobItemsSorted = [...(jobItems || [])]?.sort((a, b) => {
+    if (sortBy === 'relevant') {
+      return b.relevanceScore - a.relevanceScore;
+    }
+    return a.daysAgo - b.daysAgo;
+  });
   const jobItemsSliced = jobItemsSorted?.slice(
     currentPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE,
     currentPage * RESULTS_PER_PAGE
