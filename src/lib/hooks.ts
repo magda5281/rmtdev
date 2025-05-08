@@ -21,7 +21,7 @@ export function useJobItem(id: number | null) {
     ['job-item', id],
     () => (id ? fetchJobItem(id) : null),
     {
-      staleTime: 1000,
+      staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(id),
@@ -39,8 +39,6 @@ export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<JobItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const jobItemsSliced = jobItems.slice(0, 7);
-  const totalNumberOfResults = jobItems.length;
   useEffect(() => {
     if (!searchText.trim()) {
       return;
@@ -61,7 +59,7 @@ export function useJobItems(searchText: string) {
     fetchData();
   }, [searchText]);
 
-  return { jobItemsSliced, isLoading, totalNumberOfResults } as const;
+  return { jobItems, isLoading } as const;
 }
 export function useDebounce<T>(value: T, delay = 250): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
