@@ -9,6 +9,7 @@ type JobListProps = {
 };
 export function JobList({ jobItems, isLoading }: JobListProps) {
   const isActive = useActiveId();
+
   return (
     <ul className='job-list'>
       {isLoading && <Spinner />}
