@@ -3,43 +3,69 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 type PaginationControlsProps = {
   currentPage: number;
   onClick: (direction: 'next' | 'previous') => void;
+  totalNumberOfPages: number;
 };
 export default function PaginationControls({
   onClick,
   currentPage,
+  totalNumberOfPages,
 }: PaginationControlsProps) {
+  console.log('totalNumberOfPages', totalNumberOfPages);
   return (
     <section className='pagination'>
-      <PaginationButton
-        direction='previous'
-        currentPage={currentPage}
-        onClick={() => onClick('previous')}
-      />
-      <PaginationButton
-        direction='next'
-        currentPage={currentPage}
-        onClick={() => onClick('next')}
-      />
+      {totalNumberOfPages > 0 && (
+        <>
+          <PaginationButton
+            direction='previous'
+            onClick={() => onClick('previous')}
+            disabled={currentPage === 1 || totalNumberOfPages === 0}
+          />
+
+          <span>{currentPage}</span>
+
+          <PaginationButton
+            direction='next'
+            onClick={() => onClick('next')}
+            disabled={
+              totalNumberOfPages === currentPage || totalNumberOfPages === 0
+            }
+          />
+        </>
+      )}
     </section>
   );
 }
 
 type PaginationButtonProps = {
   direction: 'next' | 'previous';
-  currentPage: number;
   onClick: () => void;
+  disabled: boolean;
 };
 function PaginationButton({
   direction,
-  currentPage,
   onClick,
+  disabled,
 }: PaginationButtonProps) {
   const previous = direction === 'previous';
 
   return (
-    <button className='pagination__button' onClick={onClick}>
-      {previous ? <ArrowLeftIcon /> : <ArrowRightIcon />}
-      Page {previous ? currentPage - 1 : currentPage + 1}
+    <button
+      className={`pagination__button `}
+      onClick={(e) => {
+        onClick();
+        e.currentTarget.blur();
+      }}
+      disabled={disabled}
+    >
+      {previous ? (
+        <>
+          <ArrowLeftIcon /> <span>{direction}</span>
+        </>
+      ) : (
+        <>
+          <span>{direction}</span> <ArrowRightIcon />
+        </>
+      )}
     </button>
   );
 }

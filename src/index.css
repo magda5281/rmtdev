@@ -661,6 +661,17 @@ body::-webkit-scrollbar {
   margin-left: auto;
 }
 
+.pagination__button:disabled {
+  background-color: #d1d5d9;
+  color: #999;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.pagination__button > span {
+  text-transform: capitalize;
+}
+
 .pagination__button--back .pagination__icon {
   margin-right: 3px;
 }

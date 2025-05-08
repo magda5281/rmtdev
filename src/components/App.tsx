@@ -22,9 +22,10 @@ function App() {
   const { jobItems, isLoading } = useJobItems(debouncedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   //derived/computed state
-  const jobItemsSliced = jobItems?.slice(0, 7) || [];
+  const jobItemsSliced =
+    jobItems?.slice(currentPage * 7 - 7, currentPage * 7) || [];
   const totalNumberOfResults = jobItems?.length || 0;
-
+  const totalNumberOfPages = Math.ceil(totalNumberOfResults / 7);
   //event handlers/actions
   const handleChangePage = (direction: 'next' | 'previous') => {
     if (direction === 'next') {
@@ -54,6 +55,7 @@ function App() {
           <PaginationControls
             onClick={handleChangePage}
             currentPage={currentPage}
+            totalNumberOfPages={totalNumberOfPages}
           />
         </Sidebar>
         <JobItemContent />
