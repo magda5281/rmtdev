@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { JobItem, JobItemExpanded } from './types';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useQuery } from '@tanstack/react-query';
+import { handleError } from './utils';
 
 type JobItemApiResponse = {
   public: boolean;
@@ -27,6 +28,10 @@ const fetchJobItems = async (
   searchText: string
 ): Promise<JobItemsApiResponse> => {
   const response = await fetch(`${API_BASE_URL}?search=${searchText}`);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
   const data = await response.json();
   return data;
 };
@@ -40,9 +45,8 @@ export function useJobItem(id: number | null) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(id),
-      onError: (error) => {
-        console.log(error);
-      },
+      //in react-query 5 unknown type is replaced with Error type
+      onError: handleError,
     }
   );
 
@@ -60,14 +64,13 @@ export function useJobItems(searchText: string) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(searchText),
-      onError: (error) => {
-        console.log(error);
-      },
+      onError: handleError,
     }
   );
 
   return { jobItems: data?.jobItems, isLoading: isInitialLoading } as const;
 }
+//-------------------------------------------------------------------------
 export function useDebounce<T>(value: T, delay = 250): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
