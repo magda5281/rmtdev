@@ -7,7 +7,7 @@ export default function JobItemContent() {
   const activeId = useActiveId();
   const { jobItem, isLoading } = useJobItem(activeId);
 
-  return !jobItem ? (
+  return !jobItem && !isLoading ? (
     <EmptyJobContent />
   ) : (
     <section className='job-details'>
@@ -17,38 +17,38 @@ export default function JobItemContent() {
         </div>
       ) : (
         <div>
-          <img src={jobItem.coverImgURL} alt='#' />
+          <img src={jobItem?.coverImgURL} alt='#' />
 
-          <a className='apply-btn' href={jobItem.companyURL} target='_blank'>
+          <a className='apply-btn' href={jobItem?.companyURL} target='_blank'>
             Apply
           </a>
 
           <section className='job-info'>
             <div className='job-info__left'>
-              <div className='job-info__badge'>{jobItem.badgeLetters}</div>
+              <div className='job-info__badge'>{jobItem?.badgeLetters}</div>
               <div className='job-info__below-badge'>
-                <time className='job-info__time'>{jobItem.daysAgo}d</time>
+                <time className='job-info__time'>{jobItem?.daysAgo}d</time>
 
                 <BookmarkIcon />
               </div>
             </div>
 
             <div className='job-info__right'>
-              <h2 className='second-heading'>{jobItem.title}</h2>
-              <p className='job-info__company'>{jobItem.company}</p>
-              <p className='job-info__description'>{jobItem.description}</p>
+              <h2 className='second-heading'>{jobItem?.title}</h2>
+              <p className='job-info__company'>{jobItem?.company}</p>
+              <p className='job-info__description'>{jobItem?.description}</p>
               <div className='job-info__extras'>
                 <p className='job-info__extra'>
                   <i className='fa-solid fa-clock job-info__extra-icon'></i>
-                  {jobItem.duration}
+                  {jobItem?.duration}
                 </p>
                 <p className='job-info__extra'>
                   <i className='fa-solid fa-money-bill job-info__extra-icon'></i>
-                  {jobItem.salary}
+                  {jobItem?.salary}
                 </p>
                 <p className='job-info__extra'>
                   <i className='fa-solid fa-location-dot job-info__extra-icon'></i>{' '}
-                  {jobItem.location}
+                  {jobItem?.location}
                 </p>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function JobItemContent() {
                 </p>
               </div>
               <ul className='qualifications__list'>
-                {jobItem.qualifications.map((qualification, i) => (
+                {jobItem?.qualifications.map((qualification) => (
                   <li key={`${qualification}`} className='qualifications__item'>
                     {qualification}
                   </li>
@@ -79,7 +79,7 @@ export default function JobItemContent() {
                 </p>
               </div>
               <ul className='reviews__list'>
-                {jobItem.reviews.map((review) => (
+                {jobItem?.reviews.map((review) => (
                   <li key={review} className='reviews__item'>
                     {review}
                   </li>
