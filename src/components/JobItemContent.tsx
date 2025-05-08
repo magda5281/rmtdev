@@ -63,8 +63,8 @@ export default function JobItemContent() {
                 </p>
               </div>
               <ul className='qualifications__list'>
-                {jobItem.qualifications.map((qualification) => (
-                  <li key={qualification} className='qualifications__item'>
+                {jobItem.qualifications.map((qualification, i) => (
+                  <li key={`${qualification}`} className='qualifications__item'>
                     {qualification}
                   </li>
                 ))}

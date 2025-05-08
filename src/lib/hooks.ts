@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { JobItem, JobItemExpanded } from './types';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { useQuery } from '@tanstack/react-query';
 export function useActiveId() {
   const [activeId, setActiveId] = useState<number | null>(null);
   useEffect(() => {
@@ -15,29 +16,47 @@ export function useActiveId() {
   }, []);
   return activeId;
 }
+// export function useJobItem(id: number | null) {
+//   const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
+//   const [isLoading, setIsLoading] = useState(false);
+//   useEffect(() => {
+//     if (!id) return;
 
+//     const fetchJob = async () => {
+//       setIsLoading(true);
+//       try {
+//         const response = await fetch(`${API_BASE_URL}/${id}`);
+//         const data = await response.json();
+//         setIsLoading(false);
+//         setJobItem(data?.jobItem ?? null);
+//       } catch (err) {
+//         setJobItem(null);
+//         setIsLoading(false);
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+//     fetchJob();
+//   }, [id]);
+//   return { jobItem, isLoading } as const;
+// }
 export function useJobItem(id: number | null) {
-  const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchJob = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${API_BASE_URL}/${id}`);
-        const data = await response.json();
-        setIsLoading(false);
-        setJobItem(data?.jobItem ?? null);
-      } catch (err) {
-        setJobItem(null);
-        setIsLoading(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchJob();
-  }, [id]);
+  const { data, isLoading } = useQuery(
+    ['job-item', id],
+    async () => {
+      const response = await fetch(`${API_BASE_URL}/${id}`);
+      const data = await response.json();
+      return data;
+    },
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      onError: () => {},
+    }
+  );
+  const jobItem: JobItemExpanded = data?.jobItem;
   return { jobItem, isLoading } as const;
 }
 export function useJobItems(searchText: string) {
@@ -68,7 +87,6 @@ export function useJobItems(searchText: string) {
 
   return { jobItemsSliced, isLoading, totalNumberOfResults } as const;
 }
-
 export function useDebounce<T>(value: T, delay = 250): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
