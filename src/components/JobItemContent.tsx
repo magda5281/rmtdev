@@ -6,7 +6,8 @@ import Spinner from './Spinner';
 export default function JobItemContent() {
   const activeId = useActiveId();
   const { jobItem, isLoading } = useJobItem(activeId);
-
+  console.log('jobItem', jobItem);
+  console.log('isLoading', isLoading);
   if (isLoading) {
     return <Loading />;
   }
