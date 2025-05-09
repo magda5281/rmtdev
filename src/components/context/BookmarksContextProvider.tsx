@@ -6,7 +6,7 @@ type BookmarksContextType = {
   handleToggleBookmark(id: number): void;
 };
 
-export const BookmarksContext = createContext<BookmarksContextType>({
+export const BookmarksContext = createContext<BookmarksContextType | null>({
   bookmarkedIds: [],
   handleToggleBookmark: () => {},
 });

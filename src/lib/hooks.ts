@@ -1,8 +1,9 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useContext, useEffect, useState } from 'react';
 import { JobItem, JobItemExpanded } from './types';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useQuery } from '@tanstack/react-query';
 import { handleError } from './utils';
+import { BookmarksContext } from '../components/context/BookmarksContextProvider';
 
 type JobItemApiResponse = {
   public: boolean;
@@ -111,6 +112,19 @@ export function useLocalStorage<T>(
   }, [value, key]);
   return [value, setValue] as const;
 }
+
+//--------------------------------------------------------------------------------
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext);
+  if (!context) {
+    throw Error(
+      'useContext(BookmarksContext) must be used within a BookmarksContextProvider'
+    );
+  }
+  return context;
+}
+
 // export function useJobItem(id: number | null) {
 //   const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
 //   const [isLoading, setIsLoading] = useState(false);
