@@ -4,6 +4,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { handleError } from './utils';
 import { BookmarksContext } from '../components/context/BookmarksContextProvider';
+import { ActiveIdContext } from '../components/context/ActiveIdContextProvider';
+import { SearchTextContext } from '../components/context/SearchTextContextProvider';
+import { JobItemsContext } from '../components/context/JobItemsContextProvider';
 
 type JobItemsApiResponse = {
   public: boolean;
@@ -160,6 +163,36 @@ export function useBookmarksContext() {
   if (!context) {
     throw Error(
       'useContext(BookmarksContext) must be used within a BookmarksContextProvider'
+    );
+  }
+  return context;
+}
+
+export function useActiveIdContext() {
+  const context = useContext(ActiveIdContext);
+  if (!context) {
+    throw Error(
+      'useContext(ActiveIdContext) must be used within a ActiveIdContextProvider'
+    );
+  }
+  return context;
+}
+
+export function useSearchTextContext() {
+  const context = useContext(SearchTextContext);
+  if (!context) {
+    throw Error(
+      'useContext(SearchTextContext) must be used within a SearchTextContextContextProvider'
+    );
+  }
+  return context;
+}
+
+export function useJobItemsContext() {
+  const context = useContext(JobItemsContext);
+  if (!context) {
+    throw Error(
+      'useContext(JobItemsContext) must be used within a JobItemsContextContextProvider'
     );
   }
   return context;
