@@ -299,6 +299,11 @@ body::-webkit-scrollbar {
   position: fixed;
   left: 50%;
   top: 82px;
+  display: flex;
+  justify-content: center;
+}
+.bookmarks-popover--empty {
+  align-content: center;
 }
 
 .job-list--bookmarks {
