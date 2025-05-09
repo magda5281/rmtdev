@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { JobItem, JobItemExpanded } from './types';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useQuery } from '@tanstack/react-query';
@@ -97,6 +97,20 @@ export function useActiveId() {
   return activeId;
 }
 
+//--------------------------------------------------------------------------------
+
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<SetStateAction<T>>] {
+  const [value, setValue] = useState(
+    JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))
+  );
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key]);
+  return [value, setValue] as const;
+}
 // export function useJobItem(id: number | null) {
 //   const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
 //   const [isLoading, setIsLoading] = useState(false);
