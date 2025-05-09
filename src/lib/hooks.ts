@@ -1,28 +1,14 @@
 import { SetStateAction, useContext, useEffect, useState } from 'react';
 import { JobItem, JobItemExpanded } from './types';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { handleError } from './utils';
 import { BookmarksContext } from '../components/context/BookmarksContextProvider';
-
-type JobItemApiResponse = {
-  public: boolean;
-  jobItem: JobItemExpanded;
-};
 
 type JobItemsApiResponse = {
   public: boolean;
   sorted: boolean;
   jobItems: JobItem[];
-};
-const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
-  const response = await fetch(`${API_BASE_URL}/${id}`);
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.description);
-  }
-  const data = await response.json();
-  return data;
 };
 
 const fetchJobItems = async (
@@ -36,6 +22,43 @@ const fetchJobItems = async (
   const data = await response.json();
   return data;
 };
+
+type JobItemApiResponse = {
+  public: boolean;
+  jobItem: JobItemExpanded;
+};
+const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
+  const response = await fetch(`${API_BASE_URL}/${id}`);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+  const data = await response.json();
+  return data;
+};
+//-------------------------------------------------------------------------------
+
+export function useJobItems(ids: number[]) {
+  const results = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ['job-item', id],
+      queryFn: () => (id ? fetchJobItem(id) : null),
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      //in react-query 5 unknown type is replaced with Error type
+      onError: handleError,
+    })),
+  });
+  const jobItems = results
+    .map((result) => result.data?.jobItem)
+    .filter((jobItem) => jobItem !== undefined);
+  const isLoading = results.some((result) => result.isLoading);
+  return { jobItems, isLoading };
+}
+
+//-----------------------------------------------------------------------------
 
 export function useJobItem(id: number | null) {
   const { data, isInitialLoading } = useQuery(
@@ -56,7 +79,7 @@ export function useJobItem(id: number | null) {
   return { jobItem, isLoading } as const;
 }
 // ----------------------------------------------------------------------
-export function useJobItems(searchText: string) {
+export function useSearchQuery(searchText: string) {
   const { data, isInitialLoading } = useQuery(
     ['job-items', searchText],
     () => fetchJobItems(searchText),
@@ -150,7 +173,7 @@ export function useBookmarksContext() {
 //   return { jobItem, isLoading } as const;
 // }
 
-// export function useJobItems(searchText: string) {
+// export function useSearchQuery(searchText: string) {
 //   const [jobItems, setJobItems] = useState<JobItem[]>([]);
 //   const [isLoading, setIsLoading] = useState(false);
 
