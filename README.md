@@ -1,27 +1,29 @@
-# React + TypeScript + Vite
+# Remote Developer Jobs Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+rmtDev is an advanced React web application designed to help users search, browse, and bookmark remote developer job listings.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[View the live demo on Vercel](#)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Search**: Search for remote developer roles by keyword input.
+- **Pagination**: Job listings are split into pages, enabling easy navigation through results.
+- **Sorting**: Order results by relevance or by most recent posting date.
+- **Job Details**: Click a listing to view full job information in a dedicated panel.
+- **Bookmarking**: Save favorite jobs to local storage; bookmarks persist across sessions and appear in a bookmark popover.
+- **Fetching data and Caching**: Instant data retrieval and background updates via React Query.
+- **Context API & Custom Hooks**: Centralize state (search criteria, bookmarks, pagination) with React Context and custom hooks for cleaner components.
+- **Shareable URLs**: Encode search state and active job in the URL for easy sharing.
+- **Error Handling & Notifications**: Leverage react-hot-toast to surface network or API errors as unobtrusive toast messages.
 
-- Configure the top-level `parserOptions` property like this:
+## Tech Stack
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- React (>=18)
+- TypeScript (strict mode enabled)
+- React Query
+- Context API
+- Fetch API
+- CSS
+- Vite
