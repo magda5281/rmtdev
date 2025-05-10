@@ -189,6 +189,12 @@ body::-webkit-scrollbar {
 .logo {
   margin-left: -8px;
   user-select: none;
+  display: inline-block; /* ensure transform applies cleanly */
+  transition: transform 0.2s ease-in-out; /* animate the scaling */
+  transform-origin: center center;
+}
+.logo:hover {
+  transform: scale(1.2);
 }
 
 .logo__img {
