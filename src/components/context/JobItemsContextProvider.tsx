@@ -4,7 +4,7 @@ import { useSearchQuery, useSearchTextContext } from '../../lib/hooks';
 import { SortBy, PaginationDirection, JobItem } from '../../lib/types';
 
 type JobItemsContextType = {
-  jobItems: JobItem[] | undefined;
+  jobItems: JobItem[];
   isLoading: boolean;
   jobItemsSliced: JobItem[];
   sortBy: SortBy;
@@ -26,6 +26,7 @@ export default function JobItemsContextProvider({
   //state
 
   const { jobItems, isLoading } = useSearchQuery(debouncedSearchText);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortBy>('relevant');
 

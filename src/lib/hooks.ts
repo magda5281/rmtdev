@@ -54,9 +54,12 @@ export function useJobItems(ids: number[]) {
       onError: handleError,
     })),
   });
-  const jobItems = results
-    .map((result) => result.data?.jobItem)
-    .filter((jobItem) => jobItem !== undefined);
+  const raw = results.map((result) => result.data?.jobItem);
+
+  const jobItems: JobItemExpanded[] = raw.filter(
+    (jobItem): jobItem is JobItemExpanded => jobItem !== undefined
+  );
+
   const isLoading = results.some((result) => result.isLoading);
   return { jobItems, isLoading };
 }
@@ -95,7 +98,10 @@ export function useSearchQuery(searchText: string) {
     }
   );
 
-  return { jobItems: data?.jobItems, isLoading: isInitialLoading } as const;
+  return {
+    jobItems: data?.jobItems ?? [],
+    isLoading: isInitialLoading,
+  } as const;
 }
 //-------------------------------------------------------------------------
 export function useDebounce<T>(value: T, delay = 250): T {
@@ -136,7 +142,7 @@ export function useLocalStorage<T>(
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]);
-  return [value, setValue] as const;
+  return [value, setValue];
 }
 
 //--------------------------------------------------------------------------------
@@ -197,55 +203,3 @@ export function useJobItemsContext() {
   }
   return context;
 }
-
-// export function useJobItem(id: number | null) {
-//   const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
-//   const [isLoading, setIsLoading] = useState(false);
-//   useEffect(() => {
-//     if (!id) return;
-
-//     const fetchJob = async () => {
-//       setIsLoading(true);
-//       try {
-//         const response = await fetch(`${API_BASE_URL}/${id}`);
-//         const data = await response.json();
-//         setIsLoading(false);
-//         setJobItem(data?.jobItem ?? null);
-//       } catch (err) {
-//         setJobItem(null);
-//         setIsLoading(false);
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
-//     fetchJob();
-//   }, [id]);
-//   return { jobItem, isLoading } as const;
-// }
-
-// export function useSearchQuery(searchText: string) {
-//   const [jobItems, setJobItems] = useState<JobItem[]>([]);
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   useEffect(() => {
-//     if (!searchText.trim()) {
-//       return;
-//     }
-//     const fetchData = async () => {
-//       setIsLoading(true);
-
-//       try {
-//         const response = await fetch(`${API_BASE_URL}?search=${searchText}`);
-//         const data = await response.json();
-//         setJobItems(data?.jobItems ?? []);
-//       } catch (err) {
-//         setJobItems([]);
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
-//     fetchData();
-//   }, [searchText]);
-
-//   return { jobItems, isLoading } as const;
-// }
