@@ -3,15 +3,15 @@ export default function Footer() {
     <footer className='footer'>
       <small>
         <p>
-          © {new Date().getFullYear()}
+          © 2025
           <a
             href='https://portfolio-8cyp.vercel.app/'
             target='_blank'
             rel='noopener noreferrer'
           >
-            HERDEVLAB
-          </a>
-          Build for my portfolio.
+            rmtDev
+          </a>{' '}
+          build for my portfolio.
         </p>
       </small>
 
